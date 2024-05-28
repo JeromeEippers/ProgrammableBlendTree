@@ -6,7 +6,8 @@ TESTDIR = test
 OBJDIR = build
 BINDIR = bin
 
-CFLAGS = -g -Wall -O3 -std=c99
+# using gnu99 instead of c99 to remove python timespec error
+CFLAGS := -g -Wall -O0 -std=gnu99
 
 .PHONY: build clean
 
@@ -18,7 +19,8 @@ SRCS := $(shell find $(SRCDIR) -name *.c)
 TESTS := $(shell find $(TESTDIR) -name *.c)
 
 # get the includes
-COMMONINCS = -I$(SRCDIR)
+COMMONINCS := -I$(SRCDIR) -I/usr/include/python3.10
+COMMONLIBS := -lpython3.10
 
 # compiled obj
 BINOBJS := $(SRCS:%=$(OBJDIR)/%.o)
@@ -29,15 +31,14 @@ TESTBINOBJ := $(filter-out %main.c.o, $(BINOBJS)) $(TESTS:%=$(OBJDIR)/%.o)
 # BUILD
 #------------------------------------------
 build: $(BINDIR)/$(PROJECT) $(BINDIR)/test makefile
-	
 	@./$(BINDIR)/test
 	@./$(BINDIR)/$(PROJECT)
 
 $(BINDIR)/$(PROJECT): $(BINOBJS) makefile
-	$(CC) $(CFLAGS) $(BINOBJS) -o $@
+	$(CC)   $(BINOBJS) -o $@ $(COMMONLIBS)
 
 $(BINDIR)/test: $(TESTBINOBJ) makefile
-	$(CC) $(CFLAGS) $(TESTBINOBJ) -o $@
+	$(CC)   $(TESTBINOBJ) -o $@ $(COMMONLIBS)
 
 $(OBJDIR)/%.c.o : %.c makefile
 	@mkdir -p $(dir $@)
