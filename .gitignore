@@ -4,3 +4,6 @@ build/*
 python_venv/*
 !python_venv/python_venv_readme.md
 
+*.egg-info
+*.pyc
+*__pycache__

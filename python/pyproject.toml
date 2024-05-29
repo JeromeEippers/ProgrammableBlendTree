@@ -1,0 +1,11 @@
+[project]
+name = "pbt"
+description = "Programmable Blend Tree, python package"
+authors = [
+    {name = "Jerome Eippers", email = "jerome@eippers.be"},
+]
+dependencies = [
+    "numpy"
+]
+version = "0.0.1"
+
