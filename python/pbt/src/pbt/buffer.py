@@ -24,6 +24,15 @@ class SkeletonBuffer:
     def _get_names(self):
         return self.names
     
+    def _get_parents(self):
+        return self.parents.flatten().tolist()
+    
+    def _get_positions(self):
+        return self.pos.flatten().tolist()
+    
+    def _get_quats(self):
+        return self.pos.flatten().tolist()
+    
 
 class InputSkeletonBuffer (SkeletonBuffer):
     pass

@@ -1,4 +1,4 @@
 wheel
 numpy
 
--e .
+-e ./python/pbt/src

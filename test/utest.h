@@ -1,5 +1,5 @@
-#ifndef _INC_UTEST_
-#define _INC_UTEST_
+#ifndef _INC_BPT_UTEST_
+#define _INC_BPT_UTEST_
 
 #include <stdint.h>
 #include <stdio.h>
@@ -23,7 +23,9 @@ void run_tests(test_fn_t* tests, int test_count);
 	memset(_return_value_.error_messages, 0, 8192);\
 	uint32_t _error_stream_cnt_ = 0;\
 	int _error_stream_cnt_inc_ = 0;\
-	fprintf(stdout, "Testing %s ", __func__ + 5);\
+	fprintf(stdout, "Testing %s ", __func__ + 8);\
+
+#define TEAR_DOWN _tear_down_jump:
 
 /* end test */
 #define END_TEST  \
@@ -32,58 +34,63 @@ void run_tests(test_fn_t* tests, int test_count);
 /* asserts*/
 #define ASSERT_TRUE(VALUE, MESSAGE){\
 	if ((VALUE) == 0) {\
-		_error_stream_cnt_inc_ = sprintf(_return_value_.error_messages + _error_stream_cnt_, (void*)(long)(8192 - _error_stream_cnt_), "  line %d: %s... Failed\n", __LINE__, MESSAGE);\
+		_error_stream_cnt_inc_ = sprintf(_return_value_.error_messages + _error_stream_cnt_, "  line %d: %s... Failed\n", __LINE__, MESSAGE);\
 		_error_stream_cnt_ += (_error_stream_cnt_inc_ > 0) ? _error_stream_cnt_inc_ : 0;\
 		_return_value_.success = 0;\
+		goto _tear_down_jump;\
 	}\
 }
 
 #define ASSERT_IEQ(EXPECTED, ACTUAL, MESSAGE){\
 	if (EXPECTED != ACTUAL) {\
-		_error_stream_cnt_inc_ = sprintf(_return_value_.error_messages + _error_stream_cnt_, (void*)(long)(8192 - _error_stream_cnt_), "  line %d: %s... Failed\n", __LINE__, MESSAGE);\
+		_error_stream_cnt_inc_ = sprintf(_return_value_.error_messages + _error_stream_cnt_, "  line %d: %s... Failed\n", __LINE__, MESSAGE);\
 		_error_stream_cnt_ += (_error_stream_cnt_inc_ > 0) ? _error_stream_cnt_inc_ : 0;\
-		_error_stream_cnt_inc_ = sprintf(_return_value_.error_messages + _error_stream_cnt_, (void*)(long)(8192 - _error_stream_cnt_), "    expected: %d\n", EXPECTED);\
+		_error_stream_cnt_inc_ = sprintf(_return_value_.error_messages + _error_stream_cnt_, "    expected: %d\n", EXPECTED);\
 		_error_stream_cnt_ += (_error_stream_cnt_inc_ > 0) ? _error_stream_cnt_inc_ : 0;\
-		_error_stream_cnt_inc_ = sprintf(_return_value_.error_messages + _error_stream_cnt_, (void*)(long)(8192 - _error_stream_cnt_), "    actual: %d\n", ACTUAL);\
+		_error_stream_cnt_inc_ = sprintf(_return_value_.error_messages + _error_stream_cnt_, "    actual: %d\n", ACTUAL);\
 		_error_stream_cnt_ += (_error_stream_cnt_inc_ > 0) ? _error_stream_cnt_inc_ : 0;\
 		_return_value_.success = 0;\
+		goto _tear_down_jump;\
 	}\
 }
 
 
 #define ASSERT_I64EQ(EXPECTED, ACTUAL, MESSAGE){\
 	if (EXPECTED != ACTUAL) {\
-		_error_stream_cnt_inc_ = sprintf(_return_value_.error_messages + _error_stream_cnt_, (void*)(long)(8192 - _error_stream_cnt_), "  line %d: %s... Failed\n", __LINE__, MESSAGE);\
+		_error_stream_cnt_inc_ = sprintf(_return_value_.error_messages + _error_stream_cnt_, "  line %d: %s... Failed\n", __LINE__, MESSAGE);\
 		_error_stream_cnt_ += (_error_stream_cnt_inc_ > 0) ? _error_stream_cnt_inc_ : 0;\
-		_error_stream_cnt_inc_ = sprintf(_return_value_.error_messages + _error_stream_cnt_, (void*)(long)(8192 - _error_stream_cnt_), "    expected: %lld\n", EXPECTED);\
+		_error_stream_cnt_inc_ = sprintf(_return_value_.error_messages + _error_stream_cnt_, "    expected: %lld\n", EXPECTED);\
 		_error_stream_cnt_ += (_error_stream_cnt_inc_ > 0) ? _error_stream_cnt_inc_ : 0;\
-		_error_stream_cnt_inc_ = sprintf(_return_value_.error_messages + _error_stream_cnt_, (void*)(long)(8192 - _error_stream_cnt_), "    actual: %lld\n", ACTUAL);\
+		_error_stream_cnt_inc_ = sprintf(_return_value_.error_messages + _error_stream_cnt_, "    actual: %lld\n", ACTUAL);\
 		_error_stream_cnt_ += (_error_stream_cnt_inc_ > 0) ? _error_stream_cnt_inc_ : 0;\
 		_return_value_.success = 0;\
+		goto _tear_down_jump;\
 	}\
 }
 
 #define ASSERT_FEQ(EXPECTED, ACTUAL, MESSAGE){\
 	if (EXPECTED != ACTUAL) {\
-		_error_stream_cnt_inc_ = sprintf(_return_value_.error_messages + _error_stream_cnt_, (void*)(long)(8192 - _error_stream_cnt_), "  line %d: %s... Failed\n", __LINE__, MESSAGE);\
+		_error_stream_cnt_inc_ = sprintf(_return_value_.error_messages + _error_stream_cnt_, "  line %d: %s... Failed\n", __LINE__, MESSAGE);\
 		_error_stream_cnt_ += (_error_stream_cnt_inc_ > 0) ? _error_stream_cnt_inc_ : 0;\
-		_error_stream_cnt_inc_ = sprintf(_return_value_.error_messages + _error_stream_cnt_, (void*)(long)(8192 - _error_stream_cnt_), "    expected: %f\n", EXPECTED);\
+		_error_stream_cnt_inc_ = sprintf(_return_value_.error_messages + _error_stream_cnt_, "    expected: %f\n", EXPECTED);\
 		_error_stream_cnt_ += (_error_stream_cnt_inc_ > 0) ? _error_stream_cnt_inc_ : 0;\
-		_error_stream_cnt_inc_ = sprintf(_return_value_.error_messages + _error_stream_cnt_, (void*)(long)(8192 - _error_stream_cnt_), "    actual: %f\n", ACTUAL);\
+		_error_stream_cnt_inc_ = sprintf(_return_value_.error_messages + _error_stream_cnt_, "    actual: %f\n", ACTUAL);\
 		_error_stream_cnt_ += (_error_stream_cnt_inc_ > 0) ? _error_stream_cnt_inc_ : 0;\
 		_return_value_.success = 0;\
+		goto _tear_down_jump;\
 	}\
 }
 
 #define ASSERT_SEQ(EXPECTED, ACTUAL, MESSAGE){\
 	if (strcmp(EXPECTED, ACTUAL) != 0) {\
-		_error_stream_cnt_inc_ = sprintf(_return_value_.error_messages + _error_stream_cnt_, (void*)(long)(8192 - _error_stream_cnt_), "  line %d: %s... Failed\n", __LINE__, MESSAGE);\
+		_error_stream_cnt_inc_ = sprintf(_return_value_.error_messages + _error_stream_cnt_, "  line %d: %s... Failed\n", __LINE__, MESSAGE);\
 		_error_stream_cnt_ += (_error_stream_cnt_inc_ > 0) ? _error_stream_cnt_inc_ : 0;\
-		_error_stream_cnt_inc_ = sprintf(_return_value_.error_messages + _error_stream_cnt_, (void*)(long)(8192 - _error_stream_cnt_), "    expected: %s\n", EXPECTED);\
+		_error_stream_cnt_inc_ = sprintf(_return_value_.error_messages + _error_stream_cnt_, "    expected: %s\n", EXPECTED);\
 		_error_stream_cnt_ += (_error_stream_cnt_inc_ > 0) ? _error_stream_cnt_inc_ : 0;\
-		_error_stream_cnt_inc_ = sprintf(_return_value_.error_messages + _error_stream_cnt_, (void*)(long)(8192 - _error_stream_cnt_), "    actual: %s\n", ACTUAL);\
+		_error_stream_cnt_inc_ = sprintf(_return_value_.error_messages + _error_stream_cnt_, "    actual: %s\n", ACTUAL);\
 		_error_stream_cnt_ += (_error_stream_cnt_inc_ > 0) ? _error_stream_cnt_inc_ : 0;\
 		_return_value_.success = 0;\
+		goto _tear_down_jump;\
 	}\
 }
 
