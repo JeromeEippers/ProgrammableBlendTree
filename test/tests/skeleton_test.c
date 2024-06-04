@@ -35,6 +35,14 @@ DECLARE_TEST(pbttest_create_simple_skeleton) {
     ASSERT_SEQ("Chest", pbt_skeleton_bone_name(skeleton, pbt_skeleton_bone_parent(skeleton, 6)), "wrong parent");
     ASSERT_SEQ("Chest", pbt_skeleton_bone_name(skeleton, pbt_skeleton_bone_parent(skeleton, 7)), "wrong parent");
 
+    // test positions
+    ASSERT_F4(pbt_float4(0,0,0,1), pbt_skeleton_bone_pos(skeleton, 0), "Hips at identity");
+    ASSERT_F4(pbt_float4(10,2,3,1), pbt_skeleton_bone_pos(skeleton, 3), "Spine should be offset");
+
+    // test rotations
+    ASSERT_F4(pbt_float4(1,0,0,0), pbt_skeleton_bone_quat(skeleton, 0), "Hips at identity");
+    ASSERT_F4(pbt_float4(-.707,0,.707,0), pbt_skeleton_bone_quat(skeleton, 1), "LeftUpLeg should be offset");
+    ASSERT_F4(pbt_float4(.707,0,.707,0), pbt_skeleton_bone_quat(skeleton, 2), "LeftUpLeg should be offset");
     TEAR_DOWN;
     
     pbt_skeleton_delete(skeleton);

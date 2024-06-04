@@ -120,10 +120,45 @@ bool bpt_python_fill_skeleton_struct_from_input_buffer(PyObject* instance, PbtSk
     skeleton->pos = (float*)malloc(sizeof(float) * skeleton->bone_count * 3);
     assert((long)skeleton->pos % 16 == 0); //make sure we are aligned to simd
     
-    assert(false); //TODO fill position and quats
-
+    for(Py_ssize_t i=0 ; i<number_of_positions; ++i)
+    {
+        PyObject * value = PyList_GetItem(ret, i);
+        skeleton->pos[i] = (float)PyFloat_AsDouble(value);
+    }
 
     // decref position list
+    Py_DECREF(ret);
+
+
+    // get the quaternions
+    ret = PyObject_CallMethod(instance, "_get_quats", NULL);
+    if(ret == NULL)
+    {
+        pbt_log_error("Could not call _get_quats method");
+        pbt_skeleton_delete(skeleton);
+        return false;
+    }
+
+    Py_ssize_t number_of_rotations = PyList_Size(ret);
+    // check that we have the same number of pos as bones
+    if((int)number_of_rotations != skeleton->bone_count * 4)
+    {
+        pbt_log_error("The number of bones does not match the number of rotations");
+        Py_DECREF(ret);
+        pbt_skeleton_delete(skeleton);
+        return false;
+    }
+    
+    skeleton->quats = (float*)malloc(sizeof(float) * skeleton->bone_count * 4);
+    assert((long)skeleton->quats % 16 == 0); //make sure we are aligned to simd
+    
+    for(Py_ssize_t i=0 ; i<number_of_rotations; ++i)
+    {
+        PyObject * value = PyList_GetItem(ret, i);
+        skeleton->quats[i] = (float)PyFloat_AsDouble(value);
+    }
+
+    // decref rotations list
     Py_DECREF(ret);
 
     return true;

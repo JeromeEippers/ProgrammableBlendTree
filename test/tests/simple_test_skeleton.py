@@ -14,3 +14,7 @@ def main():
     output.pos = np.zeros([output.bone_count(), 3], dtype=np.float32)
     output.quats = np.array([1,0,0,0], dtype=np.float32)[np.newaxis, :].repeat(output.bone_count(), axis=0)
 
+    output.pos[3, :] = [10, 2, 3]
+    output.quats[1, :] = [-0.707,0,.707,0]
+    output.quats[2, :] = [0.707,0,.707,0]
+    

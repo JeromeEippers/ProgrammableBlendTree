@@ -31,7 +31,7 @@ class SkeletonBuffer:
         return self.pos.flatten().tolist()
     
     def _get_quats(self):
-        return self.pos.flatten().tolist()
+        return self.quats.flatten().tolist()
     
 
 class InputSkeletonBuffer (SkeletonBuffer):

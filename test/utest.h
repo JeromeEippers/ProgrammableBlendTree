@@ -94,5 +94,19 @@ void run_tests(test_fn_t* tests, int test_count);
 	}\
 }
 
+#define ASSERT_F4(EXPECTED, ACTUAL, MESSAGE){\
+	Pbtfloat4 _a_ = EXPECTED; \
+	Pbtfloat4 _b_ = ACTUAL; \
+	if (pbt_float4_eq(_a_, _b_) == false) {\
+		_error_stream_cnt_inc_ = sprintf(_return_value_.error_messages + _error_stream_cnt_, "  line %d: %s... Failed\n", __LINE__, MESSAGE);\
+		_error_stream_cnt_ += (_error_stream_cnt_inc_ > 0) ? _error_stream_cnt_inc_ : 0;\
+		_error_stream_cnt_inc_ = sprintf(_return_value_.error_messages + _error_stream_cnt_, "    expected: %f,%f,%f,%f\n", _a_.values[0], _a_.values[1], _a_.values[2], _a_.values[3]);\
+		_error_stream_cnt_ += (_error_stream_cnt_inc_ > 0) ? _error_stream_cnt_inc_ : 0;\
+		_error_stream_cnt_inc_ = sprintf(_return_value_.error_messages + _error_stream_cnt_, "    actual: %f,%f,%f,%f\n", _b_.values[0], _b_.values[1], _b_.values[2], _b_.values[3]);\
+		_error_stream_cnt_ += (_error_stream_cnt_inc_ > 0) ? _error_stream_cnt_inc_ : 0;\
+		_return_value_.success = 0;\
+		goto _tear_down_jump;\
+	}\
+}
 
 #endif
