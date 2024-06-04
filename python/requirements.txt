@@ -1,4 +1,5 @@
 wheel
 numpy
+usd-core
 
 -e ./python/pbt/src
