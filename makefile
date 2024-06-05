@@ -35,9 +35,11 @@ build: $(BINDIR)/$(PROJECT) $(BINDIR)/test makefile
 	@./$(BINDIR)/$(PROJECT)
 
 $(BINDIR)/$(PROJECT): $(BINOBJS) makefile
+	@mkdir -p $(BINDIR)
 	$(CC)   $(BINOBJS) -o $@ $(COMMONLIBS)
 
 $(BINDIR)/test: $(TESTBINOBJ) makefile
+	@mkdir -p $(BINDIR)
 	$(CC)   $(TESTBINOBJ) -o $@ $(COMMONLIBS)
 
 $(OBJDIR)/%.c.o : %.c makefile
