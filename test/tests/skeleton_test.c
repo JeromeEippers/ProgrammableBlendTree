@@ -7,7 +7,8 @@ DECLARE_TEST(pbttest_create_simple_skeleton) {
     BEGIN_TEST;
 
     FILE *fp = fopen("test/tests/simple_test_skeleton.py", "r");
-    char text[8192];
+    ASSERT_TRUE(fp != NULL, "could not read file");
+    char text[8192]; memset(text, 0, 8192);
     fread(text, 8192, 8192, fp);
     fclose(fp);
 

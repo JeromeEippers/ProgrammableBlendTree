@@ -55,3 +55,15 @@ def read_usd_asset(stage, allow_partial_mesh_buffer=False):
                 root.GetName()
             )
 
+
+def import_usd_asset(filepath):
+    """Import a usd asset
+
+    Args:
+        :filepath: (str): the path of the usd stage
+
+    Returns:
+        
+    """
+    stage = Usd.Stage.Open(filepath)
+    return read_usd_asset(stage)

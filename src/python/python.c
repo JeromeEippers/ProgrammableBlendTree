@@ -165,6 +165,7 @@ bool pbt_python_call_main()
     if(ret == NULL)
     {
         pbt_log_error("Could not execute main function");
+        PyErr_Print();
         return false;
     }
     
