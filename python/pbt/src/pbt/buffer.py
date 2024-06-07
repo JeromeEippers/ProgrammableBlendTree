@@ -1,3 +1,5 @@
+import numpy as np
+
 class AnimBuffer:
 
     def __init__(self, stack_index):
@@ -35,6 +37,18 @@ class SkeletonBuffer:
     
     def _get_quats(self):
         return self.quats.flatten().tolist()
+    
+    def _set_names(self, names):
+        self.names = names
+
+    def _set_parents(self, parents):
+        self.parents = np.array(parents, dtype=np.int32)
+
+    def _set_positions(self, pos):
+        self.pos = np.array(pos, dtype=np.float32).reshape(-1, 3)
+
+    def _set_quats(self, quats):
+        self.quats = np.array(quats, dtype=np.float32).reshape(-1, 4)
     
 
 class InputSkeletonBuffer (SkeletonBuffer):

@@ -3,7 +3,7 @@
 
 #include "math.h"
 
-typedef struct PbtSkeleton
+typedef struct PbtSkeletonStruct
 {
     uint32_t     bone_count;
     char        *names;
@@ -13,8 +13,7 @@ typedef struct PbtSkeleton
     float       *quats;
 } PbtSkeleton;
 
-PbtSkeleton * pbt_create_skeleton_from_file(const char* python_script_path);
-PbtSkeleton * pbt_create_skeleton_from_string(const char* python_script);
+
 void pbt_skeleton_free(PbtSkeleton* skeleton);
 void pbt_skeleton_delete(PbtSkeleton* skeleton);
 

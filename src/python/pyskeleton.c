@@ -2,6 +2,52 @@
 #include "../log.h"
 #include <malloc.h>
 
+
+
+// callback to call the python function
+static void read_skeleton_from_python(const char* name, PyObject* instance, void* data);
+
+
+
+PbtSkeleton * pbt_python_create_skeleton_from_file(const char* python_script_path)
+{
+    FILE *fp = fopen(python_script_path, "r");
+    assert(fp != NULL);
+
+    fseek(fp, 0 , SEEK_END);
+    long fileSize = ftell(fp);
+    fseek(fp, 0 , SEEK_SET);
+    char *text = calloc(sizeof(char), fileSize+1);
+    fread(text, sizeof(char), fileSize, fp);
+
+    fclose(fp);
+
+    PbtSkeleton * skeleton = pbt_python_create_skeleton_from_string(text);
+    free(text);
+
+    return skeleton;
+}
+
+
+PbtSkeleton * pbt_python_create_skeleton_from_string(const char* python_script)
+{
+    PbtSkeleton* skeleton = NULL;
+
+    if (pbt_python_begin_script_execution(python_script))
+    {
+        if(pbt_python_call_main())
+        {
+            skeleton = calloc(1, sizeof(PbtSkeleton));
+            pbt_python_foreach_instance(read_skeleton_from_python, pbt_python_env()->output_skeleton_buffer_class, (void*)skeleton);
+        }
+        pbt_python_end_script_execution();
+    }
+
+    return skeleton;
+}
+
+
+
 bool bpt_python_fill_skeleton_struct_from_output_buffer(PyObject* instance, PbtSkeleton* skeleton)
 {
     PyObject * ret;
@@ -162,4 +208,18 @@ bool bpt_python_fill_skeleton_struct_from_output_buffer(PyObject* instance, PbtS
     Py_DECREF(ret);
 
     return true;
+}
+
+
+bool bpt_python_fill_input_buffer_with_skeleton(PbtSkeleton* skeleton, PyObject* instance)
+{
+    return true;
+}
+
+
+static void read_skeleton_from_python(const char* name, PyObject* instance, void* data)
+{
+    PbtSkeleton *skeleton = (PbtSkeleton*) data;
+    assert(skeleton->bone_count == 0);
+    bpt_python_fill_skeleton_struct_from_output_buffer(instance, skeleton);
 }

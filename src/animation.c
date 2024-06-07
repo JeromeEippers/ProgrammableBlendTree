@@ -1,0 +1,25 @@
+#include "animation.h"
+#include <malloc.h>
+
+
+
+void pbt_animation_free(PbtAnimation* animation)
+{
+    if(animation->pos != NULL) free(animation->pos);
+    if(animation->quats != NULL) free(animation->quats);
+
+    animation->frame_count = 0;
+    animation->pos = NULL;
+    animation->quats = NULL;
+}
+
+void pbt_animation_delete(PbtAnimation* animation)
+{ 
+    pbt_animation_free(animation);
+    free(animation);
+}
+
+uint32_t pbt_animation_frame_count(PbtAnimation* animation)
+{
+    return animation->frame_count;
+}

@@ -1,12 +1,12 @@
 #include "../utest.h"
-#include "../../src/skeleton.h"
+#include "../../src/python/pyskeleton.h"
 #include <stdio.h>
 
 
 DECLARE_TEST(pbttest_create_simple_skeleton) {
     BEGIN_TEST;
 
-    PbtSkeleton * skeleton = pbt_create_skeleton_from_file("test/tests/simple_test_skeleton.py");
+    PbtSkeleton * skeleton = pbt_python_create_skeleton_from_file("test/tests/simple_test_skeleton.py");
     
     ASSERT_IEQ(8, pbt_skeleton_bone_count(skeleton), "wrong number of bones");
 
@@ -49,7 +49,7 @@ DECLARE_TEST(pbttest_create_simple_skeleton) {
 DECLARE_TEST(pbttest_load_default_skeleton) {
     BEGIN_TEST;
 
-    PbtSkeleton * skeleton = pbt_create_skeleton_from_file("data/character/AnimLabSkeleton.py");
+    PbtSkeleton * skeleton = pbt_python_create_skeleton_from_file("data/character/AnimLabSkeleton.py");
 
     ASSERT_IEQ(23, pbt_skeleton_bone_count(skeleton), "wrong number of bones");
 
