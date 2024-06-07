@@ -30,7 +30,7 @@ DECLARE_TEST(pbttest_types) {
     ASSERT_IEQ(1, (uint32_t)sizeof(int8_t), "int8 is 1bits");
     ASSERT_IEQ(2, (uint32_t)sizeof(int16_t), "int16 is 2bits");
     ASSERT_IEQ(4, (uint32_t)sizeof(int32_t), "int32 is 4bits");
-    ASSERT_IEQ(8, (uint32_t)sizeof(int64_t), "int32 is 8bits");
+    ASSERT_IEQ(8, (uint32_t)sizeof(int64_t), "int64 is 8bits");
     ASSERT_IEQ(4, (uint32_t)sizeof(float), "float is 4bits");
     ASSERT_IEQ(8, (uint32_t)sizeof(double), "double is 8bits");
     ASSERT_IEQ(16, (uint32_t)sizeof(struct _mock_struct_size), "struct is aligned on 16bits");

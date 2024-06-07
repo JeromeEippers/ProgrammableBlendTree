@@ -6,13 +6,7 @@
 DECLARE_TEST(pbttest_create_simple_skeleton) {
     BEGIN_TEST;
 
-    FILE *fp = fopen("test/tests/simple_test_skeleton.py", "r");
-    ASSERT_TRUE(fp != NULL, "could not read file");
-    char text[8192]; memset(text, 0, 8192);
-    fread(text, 8192, 8192, fp);
-    fclose(fp);
-
-    PbtSkeleton * skeleton = pbt_create_skeleton_from_string(text);
+    PbtSkeleton * skeleton = pbt_create_skeleton_from_file("test/tests/simple_test_skeleton.py");
     
     ASSERT_IEQ(8, pbt_skeleton_bone_count(skeleton), "wrong number of bones");
 
@@ -44,6 +38,21 @@ DECLARE_TEST(pbttest_create_simple_skeleton) {
     ASSERT_F4(pbt_float4(1,0,0,0), pbt_skeleton_bone_quat(skeleton, 0), "Hips at identity");
     ASSERT_F4(pbt_float4(-.707,0,.707,0), pbt_skeleton_bone_quat(skeleton, 1), "LeftUpLeg should be offset");
     ASSERT_F4(pbt_float4(.707,0,.707,0), pbt_skeleton_bone_quat(skeleton, 2), "LeftUpLeg should be offset");
+    TEAR_DOWN;
+    
+    pbt_skeleton_delete(skeleton);
+
+    END_TEST;
+}
+
+
+DECLARE_TEST(pbttest_load_default_skeleton) {
+    BEGIN_TEST;
+
+    PbtSkeleton * skeleton = pbt_create_skeleton_from_file("data/character/AnimLabSkeleton.py");
+
+    ASSERT_IEQ(23, pbt_skeleton_bone_count(skeleton), "wrong number of bones");
+
     TEAR_DOWN;
     
     pbt_skeleton_delete(skeleton);

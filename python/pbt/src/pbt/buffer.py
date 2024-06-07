@@ -21,6 +21,9 @@ class SkeletonBuffer:
     def bone_count(self):
         return len(self.names)
     
+    def bone_index(self, name):
+        return self.names.index(name)
+    
     def _get_names(self):
         return self.names
     

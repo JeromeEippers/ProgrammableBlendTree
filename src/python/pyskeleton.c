@@ -2,7 +2,7 @@
 #include "../log.h"
 #include <malloc.h>
 
-bool bpt_python_fill_skeleton_struct_from_input_buffer(PyObject* instance, PbtSkeleton* skeleton)
+bool bpt_python_fill_skeleton_struct_from_output_buffer(PyObject* instance, PbtSkeleton* skeleton)
 {
     PyObject * ret;
 
@@ -26,23 +26,23 @@ bool bpt_python_fill_skeleton_struct_from_input_buffer(PyObject* instance, PbtSk
     if(ret == NULL)
     {
         pbt_log_error("Could not call _get_names method");
-        pbt_skeleton_delete(skeleton);
+        pbt_skeleton_free(skeleton);
         return false;
     }
     
     Py_ssize_t number_of_names = PyList_Size(ret);
     
     // check that we have the same number of names as bones
-    if((int)number_of_names != skeleton->bone_count)
+    if((uint32_t)number_of_names != skeleton->bone_count)
     {
         pbt_log_error("The number of bones does not match the number of names");
         Py_DECREF(ret);
-        pbt_skeleton_delete(skeleton);
+        pbt_skeleton_free(skeleton);
         return false;
     }
 
     // names offset 
-    skeleton->names_offset = (int*)malloc(sizeof(int) * skeleton->bone_count);
+    skeleton->names_offset = malloc(sizeof(uint32_t) * skeleton->bone_count);
     skeleton->names_offset[0] = 0;
     size_t full_length = 0;
     for(Py_ssize_t i=0 ; i<number_of_names; ++i)
@@ -57,7 +57,7 @@ bool bpt_python_fill_skeleton_struct_from_input_buffer(PyObject* instance, PbtSk
     }
 
     // names
-    skeleton->names = (char*)calloc(full_length, sizeof(char));
+    skeleton->names = calloc(full_length, sizeof(char));
     for(Py_ssize_t i=0 ; i<number_of_names; ++i)
     {
         PyObject * name = PyList_GetItem(ret, i);
@@ -73,21 +73,21 @@ bool bpt_python_fill_skeleton_struct_from_input_buffer(PyObject* instance, PbtSk
     if(ret == NULL)
     {
         pbt_log_error("Could not call _get_parents method");
-        pbt_skeleton_delete(skeleton);
+        pbt_skeleton_free(skeleton);
         return false;
     }
 
     Py_ssize_t number_of_parents = PyList_Size(ret);
     // check that we have the same number of names as bones
-    if((int)number_of_parents != skeleton->bone_count)
+    if((uint32_t)number_of_parents != skeleton->bone_count)
     {
         pbt_log_error("The number of bones does not match the number of parents");
         Py_DECREF(ret);
-        pbt_skeleton_delete(skeleton);
+        pbt_skeleton_free(skeleton);
         return false;
     }
 
-    skeleton->parents = (int*)malloc(sizeof(int) * skeleton->bone_count);
+    skeleton->parents = malloc(sizeof(int32_t) * skeleton->bone_count);
 
     for(Py_ssize_t i=0 ; i<number_of_parents; ++i)
     {
@@ -103,7 +103,7 @@ bool bpt_python_fill_skeleton_struct_from_input_buffer(PyObject* instance, PbtSk
     if(ret == NULL)
     {
         pbt_log_error("Could not call _get_positions method");
-        pbt_skeleton_delete(skeleton);
+        pbt_skeleton_free(skeleton);
         return false;
     }
 
@@ -113,11 +113,11 @@ bool bpt_python_fill_skeleton_struct_from_input_buffer(PyObject* instance, PbtSk
     {
         pbt_log_error("The number of bones does not match the number of positions");
         Py_DECREF(ret);
-        pbt_skeleton_delete(skeleton);
+        pbt_skeleton_free(skeleton);
         return false;
     }
     
-    skeleton->pos = (float*)malloc(sizeof(float) * skeleton->bone_count * 3);
+    skeleton->pos = malloc(sizeof(float) * skeleton->bone_count * 3);
     assert((long)skeleton->pos % 16 == 0); //make sure we are aligned to simd
     
     for(Py_ssize_t i=0 ; i<number_of_positions; ++i)
@@ -135,7 +135,7 @@ bool bpt_python_fill_skeleton_struct_from_input_buffer(PyObject* instance, PbtSk
     if(ret == NULL)
     {
         pbt_log_error("Could not call _get_quats method");
-        pbt_skeleton_delete(skeleton);
+        pbt_skeleton_free(skeleton);
         return false;
     }
 
@@ -145,11 +145,11 @@ bool bpt_python_fill_skeleton_struct_from_input_buffer(PyObject* instance, PbtSk
     {
         pbt_log_error("The number of bones does not match the number of rotations");
         Py_DECREF(ret);
-        pbt_skeleton_delete(skeleton);
+        pbt_skeleton_free(skeleton);
         return false;
     }
     
-    skeleton->quats = (float*)malloc(sizeof(float) * skeleton->bone_count * 4);
+    skeleton->quats = malloc(sizeof(float) * skeleton->bone_count * 4);
     assert((long)skeleton->quats % 16 == 0); //make sure we are aligned to simd
     
     for(Py_ssize_t i=0 ; i<number_of_rotations; ++i)

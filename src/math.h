@@ -2,6 +2,7 @@
 #define _INC_PBT_MATH_
 
 #include <stdbool.h>
+#include <stdint.h>
 
 #define PBT_EPSILON 1.e-6
 
