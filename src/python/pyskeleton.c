@@ -56,6 +56,7 @@ bool bpt_python_fill_skeleton_struct_from_output_buffer(PyObject* instance, PbtS
     if(ret == NULL)
     {
         pbt_log_error("Could not call bone_count method");
+        pbt_log_python_error();
         return false;
     }
 
@@ -72,6 +73,7 @@ bool bpt_python_fill_skeleton_struct_from_output_buffer(PyObject* instance, PbtS
     if(ret == NULL)
     {
         pbt_log_error("Could not call _get_names method");
+        pbt_log_python_error();
         pbt_skeleton_free(skeleton);
         return false;
     }
@@ -119,6 +121,7 @@ bool bpt_python_fill_skeleton_struct_from_output_buffer(PyObject* instance, PbtS
     if(ret == NULL)
     {
         pbt_log_error("Could not call _get_parents method");
+        pbt_log_python_error();
         pbt_skeleton_free(skeleton);
         return false;
     }
@@ -149,6 +152,7 @@ bool bpt_python_fill_skeleton_struct_from_output_buffer(PyObject* instance, PbtS
     if(ret == NULL)
     {
         pbt_log_error("Could not call _get_positions method");
+        pbt_log_python_error();
         pbt_skeleton_free(skeleton);
         return false;
     }
@@ -181,6 +185,7 @@ bool bpt_python_fill_skeleton_struct_from_output_buffer(PyObject* instance, PbtS
     if(ret == NULL)
     {
         pbt_log_error("Could not call _get_quats method");
+        pbt_log_python_error();
         pbt_skeleton_free(skeleton);
         return false;
     }
@@ -214,8 +219,9 @@ bool bpt_python_fill_skeleton_struct_from_output_buffer(PyObject* instance, PbtS
 bool bpt_python_fill_input_buffer_with_skeleton(PbtSkeleton* skeleton, PyObject* instance)
 {
     PyObject * ret, *func_name;
-
     Py_ssize_t bone_count = (Py_ssize_t)pbt_skeleton_bone_count(skeleton);
+
+    // names 
     PyObject * namelist = PyList_New(bone_count);
     for(Py_ssize_t i=0; i < bone_count; ++i){
         PyList_SetItem(namelist, i, PyUnicode_FromString(pbt_skeleton_bone_name(skeleton, (uint32_t)i)));
@@ -234,6 +240,69 @@ bool bpt_python_fill_input_buffer_with_skeleton(PbtSkeleton* skeleton, PyObject*
     }
     Py_DECREF(ret);
 
+    // parents
+    PyObject * parentlist = PyList_New(bone_count);
+    for(Py_ssize_t i=0; i < bone_count; ++i){
+        PyList_SetItem(parentlist, i, PyLong_FromLong(pbt_skeleton_bone_parent(skeleton, (uint32_t)i)));
+    }
+
+    func_name = PyUnicode_FromString("_set_parents");
+    ret = PyObject_CallMethodObjArgs(instance, func_name, parentlist, NULL);
+    Py_DECREF(func_name);
+    Py_DECREF(parentlist);
+
+    if(ret == NULL)
+    {
+        pbt_log_error("Could not call _set_parents method");
+        pbt_log_python_error();
+        return false;
+    }
+    Py_DECREF(ret);
+
+    // pos
+    PyObject * poslist = PyList_New(bone_count*3);
+    for(Py_ssize_t i=0; i < bone_count; ++i){
+        Pbtfloat4 quat = pbt_skeleton_bone_pos(skeleton, (uint32_t)i);
+        PyList_SetItem(poslist, i*3 + 0, PyFloat_FromDouble(quat.values[0]));
+        PyList_SetItem(poslist, i*3 + 1, PyFloat_FromDouble(quat.values[1]));
+        PyList_SetItem(poslist, i*3 + 2, PyFloat_FromDouble(quat.values[2]));
+    }
+
+    func_name = PyUnicode_FromString("_set_positions");
+    ret = PyObject_CallMethodObjArgs(instance, func_name, poslist, NULL);
+    Py_DECREF(func_name);
+    Py_DECREF(poslist);
+
+    if(ret == NULL)
+    {
+        pbt_log_error("Could not call _set_positions method");
+        pbt_log_python_error();
+        return false;
+    }
+    Py_DECREF(ret);
+
+    // quats
+    PyObject * quatlist = PyList_New(bone_count*4);
+    for(Py_ssize_t i=0; i < bone_count; ++i){
+        Pbtfloat4 quat = pbt_skeleton_bone_quat(skeleton, (uint32_t)i);
+        PyList_SetItem(quatlist, i*4 + 0, PyFloat_FromDouble(quat.values[0]));
+        PyList_SetItem(quatlist, i*4 + 1, PyFloat_FromDouble(quat.values[1]));
+        PyList_SetItem(quatlist, i*4 + 2, PyFloat_FromDouble(quat.values[2]));
+        PyList_SetItem(quatlist, i*4 + 3, PyFloat_FromDouble(quat.values[3]));
+    }
+
+    func_name = PyUnicode_FromString("_set_quats");
+    ret = PyObject_CallMethodObjArgs(instance, func_name, quatlist, NULL);
+    Py_DECREF(func_name);
+    Py_DECREF(quatlist);
+
+    if(ret == NULL)
+    {
+        pbt_log_error("Could not call _set_quats method");
+        pbt_log_python_error();
+        return false;
+    }
+    Py_DECREF(ret);
 
     return true;
 }

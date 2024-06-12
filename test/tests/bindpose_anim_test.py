@@ -10,5 +10,5 @@ output = pbt.OutputAnimBuffer()
 
 def main():
 
-    print("bone count", skeleton.bone_count())
-    print(skeleton.names)
+    output.pos = skeleton.pos.copy()[np.newaxis, ...]
+    output.quats = skeleton.quats.copy()[np.newaxis, ...]

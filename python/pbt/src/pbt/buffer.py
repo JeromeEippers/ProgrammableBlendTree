@@ -4,6 +4,26 @@ class AnimBuffer:
 
     def __init__(self, stack_index):
         self.stack_index = stack_index
+        self.pos = None
+        self.quats = None
+
+    def bone_count(self):
+        return self.pos.shape[1]
+    
+    def frame_count(self):
+        return self.pos.shape[0]
+
+    def _get_positions(self):
+        return self.pos.flatten().tolist()
+    
+    def _get_quats(self):
+        return self.quats.flatten().tolist()
+    
+    def _set_positions(self, pos, bone_count):
+        self.pos = np.array(pos, dtype=np.float32).reshape(-1, bone_count, 3)
+
+    def _set_quats(self, quats, bone_count):
+        self.quats = np.array(quats, dtype=np.float32).reshape(-1, bone_count, 4)
 
 
 class InputAnimBuffer (AnimBuffer):
