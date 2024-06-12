@@ -48,7 +48,7 @@ PbtAnimation * pbt_python_create_animation_from_string(const char* python_script
 static void push_skeleton_in_python(const char* name, PyObject* instance, void* data)
 {
     PbtSkeleton *skeleton = (PbtSkeleton*) data;
-    assert(skeleton->bone_count == 0);
+    assert(skeleton->bone_count != 0);
     bpt_python_fill_input_buffer_with_skeleton(skeleton, instance);
 }
 

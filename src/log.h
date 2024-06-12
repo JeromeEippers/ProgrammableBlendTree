@@ -10,5 +10,6 @@ enum {PbtLOG_TRACE, PbtLOG_DEBUG, PbtLOG_WARN, PbtLOG_ERROR};
 
 void pbt_log_set_level(int level);
 void pbt_log(int level, const char *file, int line, const char *fmt, ...);
+void pbt_log_python_error();
 
 #endif

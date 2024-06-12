@@ -10,7 +10,8 @@ class InputAnimBuffer (AnimBuffer):
     pass
 
 class OutputAnimBuffer (AnimBuffer):
-    pass
+    def __init__(self):
+        super(OutputAnimBuffer, self).__init__(0)
 
 class SkeletonBuffer:
 

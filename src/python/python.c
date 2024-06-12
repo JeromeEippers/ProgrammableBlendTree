@@ -142,6 +142,8 @@ bool pbt_python_begin_script_execution(const char * script)
     }
     else
     {
+        pbt_log_error("Could not parse python");
+        pbt_log_python_error();
         Py_DECREF(environment.locals);
         environment.locals = NULL;
         return false;
@@ -165,7 +167,7 @@ bool pbt_python_call_main()
     if(ret == NULL)
     {
         pbt_log_error("Could not execute main function");
-        PyErr_Print();
+        pbt_log_python_error();
         return false;
     }
     

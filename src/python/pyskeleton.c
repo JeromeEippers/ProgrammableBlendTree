@@ -213,6 +213,28 @@ bool bpt_python_fill_skeleton_struct_from_output_buffer(PyObject* instance, PbtS
 
 bool bpt_python_fill_input_buffer_with_skeleton(PbtSkeleton* skeleton, PyObject* instance)
 {
+    PyObject * ret, *func_name;
+
+    Py_ssize_t bone_count = (Py_ssize_t)pbt_skeleton_bone_count(skeleton);
+    PyObject * namelist = PyList_New(bone_count);
+    for(Py_ssize_t i=0; i < bone_count; ++i){
+        PyList_SetItem(namelist, i, PyUnicode_FromString(pbt_skeleton_bone_name(skeleton, (uint32_t)i)));
+    }
+
+    func_name = PyUnicode_FromString("_set_names");
+    ret = PyObject_CallMethodObjArgs(instance, func_name, namelist, NULL);
+    Py_DECREF(func_name);
+    Py_DECREF(namelist);
+
+    if(ret == NULL)
+    {
+        pbt_log_error("Could not call _set_names method");
+        pbt_log_python_error();
+        return false;
+    }
+    Py_DECREF(ret);
+
+
     return true;
 }
 
