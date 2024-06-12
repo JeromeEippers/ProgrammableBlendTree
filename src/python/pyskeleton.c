@@ -50,6 +50,8 @@ PbtSkeleton * pbt_python_create_skeleton_from_string(const char* python_script)
 
 bool bpt_python_fill_skeleton_struct_from_output_buffer(PyObject* instance, PbtSkeleton* skeleton)
 {
+    assert(skeleton->bone_count == 0);
+
     PyObject * ret;
 
     ret = PyObject_CallMethod(instance, "bone_count", NULL);
@@ -66,6 +68,8 @@ bool bpt_python_fill_skeleton_struct_from_output_buffer(PyObject* instance, PbtS
     if (skeleton->bone_count == 0)
     {
         pbt_log_warn("empty skeleton");
+        pbt_skeleton_free(skeleton);
+        return false;
     }
     
     // get the names
@@ -311,6 +315,5 @@ bool bpt_python_fill_input_buffer_with_skeleton(PbtSkeleton* skeleton, PyObject*
 static void read_skeleton_from_python(const char* name, PyObject* instance, void* data)
 {
     PbtSkeleton *skeleton = (PbtSkeleton*) data;
-    assert(skeleton->bone_count == 0);
     bpt_python_fill_skeleton_struct_from_output_buffer(instance, skeleton);
 }

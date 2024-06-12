@@ -12,3 +12,5 @@ def main():
 
     output.pos = skeleton.pos.copy()[np.newaxis, ...]
     output.quats = skeleton.quats.copy()[np.newaxis, ...]
+
+    print('frame count', output.frame_count())
