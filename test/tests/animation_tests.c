@@ -1,6 +1,7 @@
 #include "../utest.h"
 #include "../../src/python/pyskeleton.h"
 #include "../../src/python/pyanimation.h"
+#include "../../src/anim/animstack.h"
 #include <stdio.h>
 
 
@@ -12,8 +13,28 @@ DECLARE_TEST(pbttest_create_bindpose_animation) {
     
     ASSERT_IEQ(1, animation->frame_count, "we should have one frame");
 
+    PbtAnimStack * animstack = pbt_create_animstack(4, skeleton->bone_count);
+
+    ASSERT_IEQ(0, pbt_animstack_stack_count(animstack), "we should have an empty stack");
+
+    pbt_animation_push_on_stack(animstack, animation, 0);
+    ASSERT_IEQ(1, pbt_animstack_stack_count(animstack), "we should have one pose on the stack");
+
+    // test positions
+    ASSERT_F4(pbt_float4(0,0,0,1), pbt_animstack_peek_pos(animstack, 1, 0), "Hips at identity");
+    ASSERT_F4(pbt_float4(10,2,3,1), pbt_animstack_peek_pos(animstack, 1, 3), "Spine should be offset");
+
+    // test rotations
+    ASSERT_F4(pbt_float4(1,0,0,0), pbt_animstack_peek_quat(animstack, 1, 0), "Hips at identity");
+    ASSERT_F4(pbt_float4(-.707,0,.707,0), pbt_animstack_peek_quat(animstack, 1, 1), "LeftUpLeg should be offset");
+    ASSERT_F4(pbt_float4(.707,0,.707,0), pbt_animstack_peek_quat(animstack, 1, 2), "LeftUpLeg should be offset");
+
+    pbt_animstack_pop(animstack, NULL, NULL);
+    ASSERT_IEQ(0, pbt_animstack_stack_count(animstack), "we should have an empty stack");
+
     TEAR_DOWN
 
+    pbt_animstack_delete(animstack);
     pbt_animation_delete(animation);
     pbt_skeleton_delete(skeleton);
 
