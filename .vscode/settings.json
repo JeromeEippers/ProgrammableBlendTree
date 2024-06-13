@@ -1,7 +1,8 @@
 {
     "files.associations": {
         "memory.h": "c",
-        "python.h": "c"
+        "python.h": "c",
+        "log.h": "c"
     },
     "python.analysis.extraPaths": [
         "./python/pbt/src"

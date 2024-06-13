@@ -20,7 +20,7 @@ TESTS := $(shell find $(TESTDIR) -name *.c)
 
 # get the includes
 COMMONINCS := -I$(SRCDIR) -I/usr/include/python3.10
-COMMONLIBS := -lpython3.10
+COMMONLIBS := -lpython3.10 -lraylib -lGL -lm -ldl
 
 # compiled obj
 BINOBJS := $(SRCS:%=$(OBJDIR)/%.o)
