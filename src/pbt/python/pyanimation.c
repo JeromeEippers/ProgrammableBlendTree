@@ -1,6 +1,6 @@
 #include "pyanimation.h"
 #include "pyskeleton.h"
-#include "../log.h"
+#include "../core/log.h"
 #include <malloc.h>
 
 static void push_skeleton_in_python(const char* name, PyObject* instance, void* data);

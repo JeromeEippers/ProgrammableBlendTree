@@ -1,5 +1,5 @@
 #include "utest.h"
-#include "../src/python/python.h"
+#include "../src/pbt/python/python.h"
 
 // declare all the tests
 DECLARE_TEST(pbttest_types);

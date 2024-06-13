@@ -1,5 +1,5 @@
 #include "python.h"
-#include "../log.h"
+#include "../core/log.h"
 
 PbtPythonEnv environment;
 

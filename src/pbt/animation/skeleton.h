@@ -1,7 +1,7 @@
 #ifndef _INC_BPT_SKELETON_
 #define _INC_BPT_SKELETON_
 
-#include "math.h"
+#include "../core/math.h"
 
 typedef struct PbtSkeletonStruct
 {

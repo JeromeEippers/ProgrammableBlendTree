@@ -1,7 +1,7 @@
 #include <stdio.h>
 
-#include "python/python.h"
-#include "log.h"
+#include "pbt/python/python.h"
+#include "pbt/core/log.h"
 
 int main(void)
 {

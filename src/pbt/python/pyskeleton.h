@@ -2,7 +2,7 @@
 #define _INC_PBT_PYTHONSKELETON_
 
 #include "python.h"
-#include "../skeleton.h"
+#include "../animation/skeleton.h"
 
 PbtSkeleton * pbt_python_create_skeleton_from_file(const char* python_script_path);
 PbtSkeleton * pbt_python_create_skeleton_from_string(const char* python_script);

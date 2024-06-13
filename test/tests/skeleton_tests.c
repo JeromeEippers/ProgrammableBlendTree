@@ -1,5 +1,5 @@
 #include "../utest.h"
-#include "../../src/python/pyskeleton.h"
+#include "../../src/pbt/python/pyskeleton.h"
 #include <stdio.h>
 
 

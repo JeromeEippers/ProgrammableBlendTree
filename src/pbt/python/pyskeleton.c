@@ -1,5 +1,5 @@
 #include "pyskeleton.h"
-#include "../log.h"
+#include "../core/log.h"
 #include <malloc.h>
 
 

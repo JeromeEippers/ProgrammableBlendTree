@@ -1,7 +1,7 @@
 #include "../utest.h"
-#include "../../src/python/pyskeleton.h"
-#include "../../src/python/pyanimation.h"
-#include "../../src/anim/animstack.h"
+#include "../../src/pbt/python/pyskeleton.h"
+#include "../../src/pbt/python/pyanimation.h"
+#include "../../src/pbt/animation/animstack.h"
 #include <stdio.h>
 
 

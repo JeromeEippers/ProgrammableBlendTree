@@ -1,8 +1,8 @@
 #ifndef _INC_BPT_ANIMATION_
 #define _INC_BPT_ANIMATION_
 
-#include "math.h"
-#include "anim/animstack.h"
+#include "../core/math.h"
+#include "animstack.h"
 
 typedef struct PbtAnimation
 {
