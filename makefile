@@ -9,7 +9,7 @@ BINDIR = bin
 # using gnu99 instead of c99 to remove python timespec error
 CFLAGS := -g -Wall -O0 -std=gnu99
 
-.PHONY: build clean
+.PHONY: build clean asm
 
 #------------------------------------------
 # GET
@@ -24,15 +24,17 @@ COMMONLIBS := -lpython3.10 -lraylib -lGL -lm -ldl
 
 # compiled obj
 BINOBJS := $(SRCS:%=$(OBJDIR)/%.o)
+BINASM := $(SRCS:%=$(OBJDIR)/%.s)
 TESTBINOBJ := $(filter-out %main.c.o, $(BINOBJS)) $(TESTS:%=$(OBJDIR)/%.o)
-
+TESTBINASM := $(filter-out %main.c.s, $(BINOBJS)) $(TESTS:%=$(OBJDIR)/%.s)
 
 #------------------------------------------
 # BUILD
 #------------------------------------------
 build: $(BINDIR)/$(PROJECT) $(BINDIR)/test makefile
 	@./$(BINDIR)/test
-	@./$(BINDIR)/$(PROJECT)
+
+asm: $(BINASM) $(TESTBINASM)
 
 $(BINDIR)/$(PROJECT): $(BINOBJS) makefile
 	@mkdir -p $(BINDIR)
@@ -46,6 +48,9 @@ $(OBJDIR)/%.c.o : %.c makefile
 	@mkdir -p $(dir $@)
 	$(CC) $(COMMONINCS) $(CFLAGS) -c $< -o $@
 
+$(OBJDIR)/%.c.s : %.c makefile
+	@mkdir -p $(dir $@)
+	$(CC) $(COMMONINCS) $(CFLAGS) -S $< -o $@
 
 #------------------------------------------
 # clean

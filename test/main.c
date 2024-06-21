@@ -9,6 +9,8 @@ DECLARE_TEST(pbttest_load_default_skeleton);
 
 DECLARE_TEST(pbttest_create_bindpose_animation);
 
+DECLARE_TEST(pbttest_simd_basic);
+
 int main(void) {
     // register all the tests
 	test_fn_t tests[] = {
@@ -16,6 +18,7 @@ int main(void) {
 			pbttest_create_simple_skeleton,
 			pbttest_load_default_skeleton,
 			pbttest_create_bindpose_animation,
+			pbttest_simd_basic
 	};
 
 	pbt_init_python();
