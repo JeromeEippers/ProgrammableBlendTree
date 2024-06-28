@@ -5,7 +5,7 @@ except Exception:
     import pbt
     import numpy as np
 
-output = pbt.OutputSkeletonBuffer()
+output = pbt.SkeletonWrite()
 
 def main():
 

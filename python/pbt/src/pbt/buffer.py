@@ -2,7 +2,7 @@ import numpy as np
 
 
 
-class OutputAnimation:
+class AnimationWrite:
 
     def __init__(self):
         self.pos = None
@@ -19,15 +19,10 @@ class OutputAnimation:
     
     def _get_quats(self):
         return self.quats.flatten().tolist()
-    
-    def _set_positions(self, pos, bone_count):
-        self.pos = np.array(pos, dtype=np.float32).reshape(-1, bone_count, 3)
-
-    def _set_quats(self, quats, bone_count):
-        self.quats = np.array(quats, dtype=np.float32).reshape(-1, bone_count, 4)
 
 
-class AnimStackBuffer:
+
+class QuatPosBaseClass:
     def __init__(self):
         self.pos = None
         self.quats = None
@@ -48,17 +43,21 @@ class AnimStackBuffer:
         self.quats = np.array(quats, dtype=np.float32).reshape(-1, 4)
 
 
-class InputAnimBuffer (AnimStackBuffer):
-    pass
-
-class OutputAnimBuffer (AnimStackBuffer):
+class PoseIO(QuatPosBaseClass):
     pass
 
 
-class SkeletonBuffer (AnimStackBuffer):
+class PoseRead (PoseIO):
+    pass
+
+class PoseWrite (PoseIO):
+    pass
+
+
+class SkeletonIO (QuatPosBaseClass):
 
     def __init__(self):
-        super(SkeletonBuffer, self).__init__()
+        super(SkeletonIO, self).__init__()
         self.names = []
         self.parents = None
 
@@ -77,8 +76,8 @@ class SkeletonBuffer (AnimStackBuffer):
     def _set_parents(self, parents):
         self.parents = np.array(parents, dtype=np.int32)
 
-class InputSkeletonBuffer (SkeletonBuffer):
+class SkeletonRead (SkeletonIO):
     pass
 
-class OutputSkeletonBuffer (SkeletonBuffer):
+class SkeletonWrite (SkeletonIO):
     pass

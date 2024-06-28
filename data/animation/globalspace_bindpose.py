@@ -12,3 +12,5 @@ def main():
 
     output.pos = skeleton.pos.copy()[np.newaxis, ...]
     output.quats = skeleton.quats.copy()[np.newaxis, ...]
+
+    output.quats, output.pos = pbt.utils.quat_fk(output.quats, output.pos, skeleton.parents)

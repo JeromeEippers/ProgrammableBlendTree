@@ -5,6 +5,8 @@
 
 #include "pbt/python/python.h"
 #include "pbt/python/pyskeleton.h"
+#include "pbt/python/pyanimation.h"
+#include "pbt/animation/animstack.h"
 #include "pbt/core/log.h"
 
 
@@ -18,6 +20,13 @@ int main(void)
 
     // load skeleton
     PbtSkeleton * skeleton = pbt_python_create_skeleton_from_file("data/character/AnimLabSkeleton.py");
+    // create an animation that is just the bindpose in global space
+    PbtAnimation * animation = pbt_python_create_animation_from_file("data/animation/globalspace_bindpose.py", skeleton);
+    // create an animation stack to read the animation
+    PbtAnimStack * animstack = pbt_create_animstack(1, skeleton->bone_count);
+
+    // 'play' the animation on the stack
+    pbt_animation_push_on_stack(animstack, animation, 0);
 
 
     InitWindow(1280, 720, "Programmable Blend Tree");
@@ -50,7 +59,7 @@ int main(void)
 
                 for (uint32_t i=0 ; i<pbt_skeleton_bone_count(skeleton); ++i)
                 {
-                    Pbtfloat4 pos = pbt_skeleton_bone_pos(skeleton, i);
+                    Pbtfloat4 pos = pbt_animstack_peek_pos(animstack, 1, i);
                     DrawSphere((Vector3){pos.values[0], pos.values[1], pos.values[2]}, 1, MAROON);
 
                 }
@@ -71,7 +80,9 @@ int main(void)
 
     CloseWindow();
 
-    // free skeleton
+    // free 
+    pbt_animstack_delete(animstack);
+    pbt_animation_delete(animation);
     pbt_skeleton_delete(skeleton);
 
     pbt_deinit_python();

@@ -13,7 +13,7 @@ DECLARE_TEST(pbttest_create_bindpose_animation) {
     
     ASSERT_IEQ(1, animation->frame_count, "we should have one frame");
 
-    PbtAnimStack * animstack = pbt_create_animstack(4, skeleton->bone_count);
+    PbtAnimStack * animstack = pbt_create_animstack(1, skeleton->bone_count);
 
     ASSERT_IEQ(0, pbt_animstack_stack_count(animstack), "we should have an empty stack");
 

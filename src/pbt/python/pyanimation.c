@@ -37,14 +37,14 @@ PbtAnimation * pbt_python_create_animation_from_string(const char* python_script
 
     if (pbt_python_begin_script_execution(python_script))
     {
-        pbt_python_foreach_instance(push_skeleton_in_python, pbt_python_env()->input_skeleton_buffer_class, (void*)skeleton);
+        pbt_python_foreach_instance(push_skeleton_in_python, pbt_python_env()->skeleton_read_class, (void*)skeleton);
         if(pbt_python_call_main())
         {
             animation = calloc(1, sizeof(PbtAnimation));
             struct anim_skel_callback_data data;
             data.animation = animation;
             data.skeleton = skeleton;
-            pbt_python_foreach_instance(read_animation_from_python, pbt_python_env()->output_animmation_buffer_class, (void*)&data);
+            pbt_python_foreach_instance(read_animation_from_python, pbt_python_env()->animation_write_class, (void*)&data);
         }
         pbt_python_end_script_execution();
     }

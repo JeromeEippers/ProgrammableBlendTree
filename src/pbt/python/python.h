@@ -11,11 +11,11 @@ typedef struct PbtPythonEnv
     PyObject* globals;
     PyObject* locals;
 
-    PyObject* input_skeleton_buffer_class;
-    PyObject* output_skeleton_buffer_class;
-    PyObject* input_animstack_buffer_class;
-    PyObject* output_animstack_buffer_class;
-    PyObject* output_animmation_buffer_class;
+    PyObject* skeleton_read_class;
+    PyObject* skeleton_write_class;
+    PyObject* pose_read_class;
+    PyObject* pose_write_class;
+    PyObject* animation_write_class;
 } PbtPythonEnv;
 
 bool pbt_init_python();

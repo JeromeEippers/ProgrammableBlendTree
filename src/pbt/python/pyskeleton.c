@@ -38,7 +38,7 @@ PbtSkeleton * pbt_python_create_skeleton_from_string(const char* python_script)
         if(pbt_python_call_main())
         {
             skeleton = calloc(1, sizeof(PbtSkeleton));
-            pbt_python_foreach_instance(read_skeleton_from_python, pbt_python_env()->output_skeleton_buffer_class, (void*)skeleton);
+            pbt_python_foreach_instance(read_skeleton_from_python, pbt_python_env()->skeleton_write_class, (void*)skeleton);
         }
         pbt_python_end_script_execution();
     }

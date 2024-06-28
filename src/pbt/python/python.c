@@ -77,11 +77,11 @@ bool pbt_init_python()
     // Get classes
     //************************************
     PyObject *pbt_module = PyDict_GetItemString(environment.globals, "pbt");
-    environment.input_animstack_buffer_class = PyObject_GetAttrString(pbt_module, "InputAnimBuffer");
-    environment.output_animstack_buffer_class = PyObject_GetAttrString(pbt_module, "OutputAnimBuffer");
-    environment.input_skeleton_buffer_class = PyObject_GetAttrString(pbt_module, "InputSkeletonBuffer");
-    environment.output_skeleton_buffer_class = PyObject_GetAttrString(pbt_module, "OutputSkeletonBuffer");
-    environment.output_animmation_buffer_class = PyObject_GetAttrString(pbt_module, "OutputAnimation");
+    environment.pose_read_class = PyObject_GetAttrString(pbt_module, "PoseRead");
+    environment.pose_write_class = PyObject_GetAttrString(pbt_module, "PoseWrite");
+    environment.skeleton_read_class = PyObject_GetAttrString(pbt_module, "SkeletonRead");
+    environment.skeleton_write_class = PyObject_GetAttrString(pbt_module, "SkeletonWrite");
+    environment.animation_write_class = PyObject_GetAttrString(pbt_module, "AnimationWrite");
     
 
     PyConfig_Clear(&config);
@@ -95,16 +95,16 @@ fail:
 
 void pbt_deinit_python()
 {
-    if (environment.input_animstack_buffer_class)
-        Py_DECREF(environment.input_animstack_buffer_class);
-    if (environment.output_animstack_buffer_class)
-        Py_DECREF(environment.output_animstack_buffer_class);
-    if (environment.input_skeleton_buffer_class)
-        Py_DECREF(environment.input_skeleton_buffer_class);
-    if (environment.output_skeleton_buffer_class)
-        Py_DECREF(environment.output_skeleton_buffer_class);
-    if (environment.output_animmation_buffer_class)
-        Py_DECREF(environment.output_animmation_buffer_class);
+    if (environment.pose_read_class)
+        Py_DECREF(environment.pose_read_class);
+    if (environment.pose_write_class)
+        Py_DECREF(environment.pose_write_class);
+    if (environment.skeleton_read_class)
+        Py_DECREF(environment.skeleton_read_class);
+    if (environment.skeleton_write_class)
+        Py_DECREF(environment.skeleton_write_class);
+    if (environment.animation_write_class)
+        Py_DECREF(environment.animation_write_class);
     if (environment.main_module)
         Py_DECREF(environment.main_module);
     Py_Finalize();
@@ -220,9 +220,9 @@ void pbt_python_foreach_instance(py_instance_runner_t callback, PyObject* classt
 static int is_buffer_instance(PyObject * object)
 {
     return 
-        PyObject_IsInstance(object, environment.input_skeleton_buffer_class) ||
-        PyObject_IsInstance(object, environment.output_skeleton_buffer_class) ||
-        PyObject_IsInstance(object, environment.input_animstack_buffer_class) ||
-        PyObject_IsInstance(object, environment.output_animstack_buffer_class) ||
-        PyObject_IsInstance(object, environment.output_animmation_buffer_class) ;
+        PyObject_IsInstance(object, environment.skeleton_read_class) ||
+        PyObject_IsInstance(object, environment.skeleton_write_class) ||
+        PyObject_IsInstance(object, environment.pose_read_class) ||
+        PyObject_IsInstance(object, environment.pose_write_class) ||
+        PyObject_IsInstance(object, environment.animation_write_class) ;
 }
